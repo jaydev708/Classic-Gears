@@ -15,7 +15,10 @@ export const Navbar = () => {
               alt="Classic Gears Logo" 
               className="h-12 w-auto" 
               onError={(e) => {
-                e.currentTarget.src = "https://via.placeholder.com/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
+                const target = e.currentTarget;
+                if (target.src !== "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS") {
+                  target.src = "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
+                }
               }}
               referrerPolicy="no-referrer" 
             />
@@ -287,7 +290,10 @@ export const Footer = () => {
                 alt="Classic Gears Logo" 
                 className="h-10 w-auto" 
                 onError={(e) => {
-                  e.currentTarget.src = "https://via.placeholder.com/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
+                  const target = e.currentTarget;
+                  if (target.src !== "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS") {
+                    target.src = "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
+                  }
                 }}
                 referrerPolicy="no-referrer" 
               />
