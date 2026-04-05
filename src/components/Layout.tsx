@@ -1,23 +1,9 @@
 import { motion } from "motion/react";
 import { Bike, ShoppingBag, Menu, X, Instagram, Facebook, Twitter } from "lucide-react";
-import { useState, ReactNode, useEffect } from "react";
-import { generateBrandLogo } from "../services/logoGenerator";
+import { useState, ReactNode } from "react";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [generatedLogo, setGeneratedLogo] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchLogo = async () => {
-      try {
-        const logo = await generateBrandLogo();
-        if (logo) setGeneratedLogo(logo);
-      } catch (error) {
-        console.error("Logo generation failed", error);
-      }
-    };
-    fetchLogo();
-  }, []);
 
   return (
     <nav className="fixed w-full z-50 bg-brand-dark/80 backdrop-blur-lg border-b border-white/5">
@@ -25,13 +11,11 @@ export const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center gap-3">
             <img 
-              src={generatedLogo || "/logo.png"} 
+              src="/logo.png" 
               alt="Classic Gears Logo" 
               className="h-12 w-auto" 
               onError={(e) => {
-                if (!generatedLogo) {
-                  e.currentTarget.src = "https://via.placeholder.com/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
-                }
+                e.currentTarget.src = "https://via.placeholder.com/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
               }}
               referrerPolicy="no-referrer" 
             />
@@ -292,20 +276,6 @@ export const OurStory = () => {
 };
 
 export const Footer = () => {
-  const [generatedLogo, setGeneratedLogo] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchLogo = async () => {
-      try {
-        const logo = await generateBrandLogo();
-        if (logo) setGeneratedLogo(logo);
-      } catch (error) {
-        console.error("Logo generation failed", error);
-      }
-    };
-    fetchLogo();
-  }, []);
-
   return (
     <footer className="bg-black pt-24 pb-12 px-4 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
@@ -313,13 +283,11 @@ export const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <img 
-                src={generatedLogo || "/logo.png"} 
+                src="/logo.png" 
                 alt="Classic Gears Logo" 
                 className="h-10 w-auto" 
                 onError={(e) => {
-                  if (!generatedLogo) {
-                    e.currentTarget.src = "https://via.placeholder.com/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
-                  }
+                  e.currentTarget.src = "https://via.placeholder.com/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
                 }}
                 referrerPolicy="no-referrer" 
               />
