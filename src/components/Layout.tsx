@@ -4,6 +4,7 @@ import { useState, ReactNode } from "react";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
   return (
     <nav className="fixed w-full z-50 bg-brand-dark/80 backdrop-blur-lg border-b border-white/5">
@@ -11,15 +12,10 @@ export const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center gap-3">
             <img 
-              src="/logo.png" 
+              src={logoError ? "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS" : "/logo.png"} 
               alt="Classic Gears Logo" 
               className="h-12 w-auto" 
-              onError={(e) => {
-                const target = e.currentTarget;
-                if (target.src !== "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS") {
-                  target.src = "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
-                }
-              }}
+              onError={() => setLogoError(true)}
               referrerPolicy="no-referrer" 
             />
             <span className="font-display text-2xl tracking-tighter uppercase hidden sm:block">Classic Gears</span>
@@ -279,6 +275,8 @@ export const OurStory = () => {
 };
 
 export const Footer = () => {
+  const [logoError, setLogoError] = useState(false);
+  
   return (
     <footer className="bg-black pt-24 pb-12 px-4 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
@@ -286,15 +284,10 @@ export const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <img 
-                src="/logo.png" 
+                src={logoError ? "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS" : "/logo.png"} 
                 alt="Classic Gears Logo" 
                 className="h-10 w-auto" 
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  if (target.src !== "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS") {
-                    target.src = "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS";
-                  }
-                }}
+                onError={() => setLogoError(true)}
                 referrerPolicy="no-referrer" 
               />
               <span className="font-display text-3xl tracking-tighter uppercase">Classic Gears</span>
