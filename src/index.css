@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bebas Neue", sans-serif;
+  --font-serif: "Crimson Pro", serif;
+
+  --color-brand-orange: #f97316;
+  --color-brand-dark: #0a0a0a;
+  --color-brand-silver: #e5e7eb;
+  --color-brand-cream: #f5f5f4;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-dark text-brand-cream font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-wider;
+  }
+}
+
+.retro-text {
+  @apply font-serif italic;
+}
+
+.glass-card {
+  @apply bg-white/5 backdrop-blur-md border border-white/10;
+}
+
+.adrenaline-gradient {
+  @apply bg-gradient-to-r from-brand-orange to-red-600;
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(245, 245, 244, 0.3);
+  color: transparent;
+}
