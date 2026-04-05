@@ -9,16 +9,16 @@ export const Navbar = () => {
     <nav className="fixed w-full z-50 bg-brand-dark/80 backdrop-blur-lg border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <div className="flex items-center gap-2">
-            <Bike className="w-8 h-8 text-brand-orange" />
-            <span className="font-display text-2xl tracking-tighter uppercase">Classic Gears</span>
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="Classic Gears Logo" className="h-12 w-auto" referrerPolicy="no-referrer" />
+            <span className="font-display text-2xl tracking-tighter uppercase hidden sm:block">Classic Gears</span>
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
             <NavLink href="#collections">Collections</NavLink>
             <NavLink href="#brotherhood">Brotherhood</NavLink>
             <NavLink href="#about">Our Story</NavLink>
-            <button className="bg-brand-orange hover:bg-orange-600 text-white px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2">
+            <button className="bg-brand-red hover:bg-red-700 text-white px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2">
               <ShoppingBag className="w-4 h-4" />
               Shop Now
             </button>
@@ -42,7 +42,7 @@ export const Navbar = () => {
           <MobileNavLink href="#collections" onClick={() => setIsOpen(false)}>Collections</MobileNavLink>
           <MobileNavLink href="#brotherhood" onClick={() => setIsOpen(false)}>Brotherhood</MobileNavLink>
           <MobileNavLink href="#about" onClick={() => setIsOpen(false)}>Our Story</MobileNavLink>
-          <button className="w-full bg-brand-orange text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
+          <button className="w-full bg-brand-red text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
             <ShoppingBag className="w-5 h-5" />
             Shop Now
           </button>
@@ -53,13 +53,13 @@ export const Navbar = () => {
 };
 
 const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
-  <a href={href} className="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-widest">
+  <a href={href} className="text-sm font-medium hover:text-brand-red transition-colors uppercase tracking-widest">
     {children}
   </a>
 );
 
 const MobileNavLink = ({ href, children, onClick }: { href: string; children: ReactNode; onClick: () => void }) => (
-  <a href={href} onClick={onClick} className="block text-lg font-medium hover:text-brand-orange transition-colors uppercase tracking-widest">
+  <a href={href} onClick={onClick} className="block text-lg font-medium hover:text-brand-red transition-colors uppercase tracking-widest">
     {children}
   </a>
 );
@@ -84,7 +84,7 @@ export const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <span className="retro-text text-brand-orange text-xl md:text-2xl mb-4 block">Est. 2024 • Built for the Bold</span>
+          <span className="retro-text text-brand-red text-xl md:text-2xl mb-4 block">Est. 2024 • Built for the Bold</span>
           <h1 className="text-6xl md:text-9xl font-display leading-none mb-6">
             RIDE WITH <br />
             <span className="text-stroke">LEGENDS</span>
@@ -107,9 +107,9 @@ export const Hero = () => {
       <motion.div 
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-brand-orange/50"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-brand-red/50"
       >
-        <div className="w-px h-16 bg-gradient-to-b from-brand-orange to-transparent mx-auto" />
+        <div className="w-px h-16 bg-gradient-to-b from-brand-red to-transparent mx-auto" />
       </motion.div>
     </section>
   );
@@ -142,7 +142,7 @@ export const FeaturedCollections = () => {
             <h2 className="text-5xl md:text-7xl mb-4">THE GEAR</h2>
             <p className="text-brand-silver/60 max-w-md">Engineered for comfort, designed for the culture. Every piece tells a story of the road.</p>
           </div>
-          <button className="text-brand-orange font-bold uppercase tracking-widest border-b-2 border-brand-orange pb-1 hover:text-white hover:border-white transition-all">
+          <button className="text-brand-red font-bold uppercase tracking-widest border-b-2 border-brand-red pb-1 hover:text-white hover:border-white transition-all">
             View All Products
           </button>
         </div>
@@ -179,7 +179,7 @@ export const FeaturedCollections = () => {
 export const Brotherhood = () => {
   return (
     <section id="brotherhood" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-brand-orange/5 -skew-y-3 origin-left" />
+      <div className="absolute inset-0 bg-brand-red/5 -skew-y-3 origin-left" />
       
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -201,26 +201,26 @@ export const Brotherhood = () => {
           </div>
           
           <div className="order-1 lg:order-2">
-            <span className="retro-text text-brand-orange text-xl mb-4 block">More than just clothes</span>
+            <span className="retro-text text-brand-red text-xl mb-4 block">More than just clothes</span>
             <h2 className="text-5xl md:text-7xl mb-8">THE BROTHERHOOD</h2>
             <p className="text-brand-silver/80 text-lg mb-8 leading-relaxed">
               Classic Gears isn't just a brand; it's a community of riders who live for the rumble of the engine and the freedom of the highway. We celebrate the bond that only those on two wheels can understand.
             </p>
             <ul className="space-y-4 mb-10">
               <li className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-brand-orange rounded-full" />
+                <div className="w-2 h-2 bg-brand-red rounded-full" />
                 <span className="font-semibold">Exclusive Rider Meetups</span>
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-brand-orange rounded-full" />
+                <div className="w-2 h-2 bg-brand-red rounded-full" />
                 <span className="font-semibold">Custom Patch Programs</span>
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-brand-orange rounded-full" />
+                <div className="w-2 h-2 bg-brand-red rounded-full" />
                 <span className="font-semibold">Biker Story Features</span>
               </li>
             </ul>
-            <button className="bg-white text-brand-dark px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-brand-orange hover:text-white transition-all">
+            <button className="bg-white text-brand-dark px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-brand-red hover:text-white transition-all">
               Join the Ride
             </button>
           </div>
@@ -242,7 +242,7 @@ export const OurStory = () => {
                 Classic Gears was born from a simple realization: the spirit of the Indian biker deserved a wardrobe that matched the soul of their machine.
               </p>
               <p>
-                Founded by <span className="text-brand-orange font-bold">Aditya Yadav</span> and co-founded by <span className="text-brand-orange font-bold">Jay Dev</span>, our brand is a tribute to the open roads, the grease-stained hands, and the unshakeable bond of the biking brotherhood.
+                Founded by <span className="text-brand-red font-bold">Aditya Yadav</span> and co-founded by <span className="text-brand-red font-bold">Jay Dev</span>, our brand is a tribute to the open roads, the grease-stained hands, and the unshakeable bond of the biking brotherhood.
               </p>
               <p>
                 We don't just make clothes; we craft the uniform for your next adventure. Every stitch is a testament to the adrenaline rush of the ride and the timeless elegance of retro biking culture.
@@ -250,7 +250,7 @@ export const OurStory = () => {
             </div>
           </div>
           <div className="relative">
-            <div className="absolute -inset-4 bg-brand-orange/20 blur-3xl rounded-full" />
+            <div className="absolute -inset-4 bg-brand-red/20 blur-3xl rounded-full" />
             <img 
               src="https://images.unsplash.com/photo-1558981420-87aa9dad1c89?auto=format&fit=crop&q=80&w=800" 
               alt="Classic Biker" 
@@ -258,7 +258,7 @@ export const OurStory = () => {
               referrerPolicy="no-referrer"
             />
             <div className="absolute bottom-8 -left-8 glass-card p-6 rounded-xl hidden md:block">
-              <p className="retro-text text-brand-orange text-xl">"Built by riders, for riders."</p>
+              <p className="retro-text text-brand-red text-xl">"Built by riders, for riders."</p>
             </div>
           </div>
         </div>
@@ -273,8 +273,8 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
-              <Bike className="w-8 h-8 text-brand-orange" />
+            <div className="flex items-center gap-3 mb-6">
+              <img src="/logo.png" alt="Classic Gears Logo" className="h-10 w-auto" referrerPolicy="no-referrer" />
               <span className="font-display text-3xl tracking-tighter uppercase">Classic Gears</span>
             </div>
             <p className="text-brand-silver/50 max-w-sm mb-8">
@@ -321,13 +321,13 @@ export const Footer = () => {
 };
 
 const SocialIcon = ({ icon }: { icon: ReactNode }) => (
-  <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-orange hover:text-white transition-all">
+  <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-all">
     {icon}
   </a>
 );
 
 const FooterLink = ({ children }: { children: ReactNode }) => (
-  <a href="#" className="hover:text-brand-orange transition-colors">
+  <a href="#" className="hover:text-brand-red transition-colors">
     {children}
   </a>
 );

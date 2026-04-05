@@ -10,10 +10,10 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen selection:bg-brand-orange selection:text-white">
+    <div className="min-h-screen selection:bg-brand-red selection:text-white">
       {/* Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-brand-orange z-[60] origin-left"
+        className="fixed top-0 left-0 right-0 h-1 bg-brand-red z-[60] origin-left"
         style={{ scaleX }}
       />
 
@@ -23,7 +23,7 @@ export default function App() {
         <Hero />
         
         {/* Stats Section - Quick Adrenaline Rush */}
-        <section className="bg-brand-orange py-12">
+        <section className="bg-brand-red py-12">
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <StatItem number="10k+" label="Riders Joined" />
             <StatItem number="50+" label="Designs" />
@@ -40,9 +40,9 @@ export default function App() {
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-4xl md:text-6xl font-display italic leading-tight mb-8">
               "FOUR WHEELS MOVE THE BODY, <br />
-              <span className="text-brand-orange not-italic">TWO WHEELS MOVE THE SOUL."</span>
+              <span className="text-brand-red not-italic">TWO WHEELS MOVE THE SOUL."</span>
             </h2>
-            <div className="w-24 h-1 bg-brand-orange mx-auto" />
+            <div className="w-24 h-1 bg-brand-red mx-auto" />
           </div>
         </section>
 
@@ -59,9 +59,9 @@ export default function App() {
               <input 
                 type="email" 
                 placeholder="Enter your email" 
-                className="flex-1 px-6 py-4 rounded-full border-2 border-gray-200 focus:border-brand-orange outline-none transition-all"
+                className="flex-1 px-6 py-4 rounded-full border-2 border-gray-200 focus:border-brand-red outline-none transition-all"
               />
-              <button className="bg-brand-dark text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-brand-orange transition-all">
+              <button className="bg-brand-dark text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-brand-red transition-all">
                 Subscribe
               </button>
             </form>
