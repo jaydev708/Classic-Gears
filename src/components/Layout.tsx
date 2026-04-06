@@ -10,15 +10,17 @@ export const Navbar = () => {
     <nav className="fixed w-full z-50 bg-brand-dark/80 backdrop-blur-lg border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <img 
-              src={logoError ? "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS" : "/logo.png"} 
+              src={logoError ? "https://placehold.co/200x80/000000/ff1a1a?text=LOGO" : "/logo.png"} 
               alt="Classic Gears Logo" 
               className="h-12 w-auto" 
               onError={() => setLogoError(true)}
               referrerPolicy="no-referrer" 
             />
-            <span className="font-display text-2xl tracking-tighter uppercase hidden sm:block">Classic Gears</span>
+            <span className="font-display text-xs md:text-sm tracking-[0.2em] uppercase hidden sm:block text-brand-silver/50 max-w-[150px] leading-tight">
+              Built by riders, for riders.
+            </span>
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
@@ -282,15 +284,17 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-4 mb-6">
               <img 
-                src={logoError ? "https://placehold.co/200x80/000000/ff1a1a?text=CLASSIC+GEARS" : "/logo.png"} 
+                src={logoError ? "https://placehold.co/200x80/000000/ff1a1a?text=LOGO" : "/logo.png"} 
                 alt="Classic Gears Logo" 
                 className="h-10 w-auto" 
                 onError={() => setLogoError(true)}
                 referrerPolicy="no-referrer" 
               />
-              <span className="font-display text-3xl tracking-tighter uppercase">Classic Gears</span>
+              <span className="font-display text-xs tracking-[0.2em] uppercase text-brand-silver/40 max-w-[120px] leading-tight">
+                Built by riders, for riders.
+              </span>
             </div>
             <p className="text-brand-silver/50 max-w-sm mb-8">
               Born in India, raised on the road. We create premium apparel for the modern biker who respects the classics.
