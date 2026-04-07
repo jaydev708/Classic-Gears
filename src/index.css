@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Bebas+Neue&family=Inter:wght@400;700;900&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Bebas Neue", sans-serif;
-  --font-serif: "Crimson Pro", serif;
+  --font-accent: "Inter", sans-serif;
 
   --color-brand-red: #ff1a1a;
   --color-brand-dark: #000000;
@@ -22,19 +22,29 @@
   }
 }
 
-.retro-text {
-  @apply font-serif italic;
+.redline-text {
+  @apply font-accent font-black uppercase tracking-[0.3em] italic;
 }
 
 .glass-card {
-  @apply bg-white/5 backdrop-blur-md border border-white/10;
+  @apply bg-white/10 backdrop-blur-xl border border-white/20;
 }
 
 .adrenaline-gradient {
-  @apply bg-gradient-to-r from-brand-red to-red-900;
+  @apply bg-gradient-to-r from-brand-red to-red-800;
 }
 
 .text-stroke {
-  -webkit-text-stroke: 1px rgba(245, 245, 244, 0.3);
+  -webkit-text-stroke: 1px rgba(255, 26, 26, 0.5);
   color: transparent;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

@@ -1,4 +1,4 @@
-import { Navbar, Hero, FeaturedCollections, Brotherhood, OurStory, Footer } from "./components/Layout";
+import { Navbar, Hero, FeaturedCollections, TheRide, OurStory, Footer } from "./components/Layout";
 import { motion, useScroll, useSpring } from "motion/react";
 
 export default function App() {
@@ -25,10 +25,10 @@ export default function App() {
         {/* Stats Section - Quick Adrenaline Rush */}
         <section className="bg-brand-red py-12">
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <StatItem number="10k+" label="Riders Joined" />
+            <StatItem number="Growing" label="Community" />
             <StatItem number="50+" label="Designs" />
-            <StatItem number="100%" label="Pure Cotton" />
-            <StatItem number="24/7" label="Road Spirit" />
+            <StatItem number="100%" label="Performance" />
+            <StatItem number="24/7" label="Redline Ready" />
           </div>
         </section>
 
@@ -46,7 +46,7 @@ export default function App() {
           </div>
         </section>
 
-        <Brotherhood />
+        <TheRide />
 
         <OurStory />
 
@@ -54,7 +54,7 @@ export default function App() {
         <section className="py-24 bg-white text-brand-dark">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-5xl md:text-7xl mb-6">GET THE INSIDE TRACK</h2>
-            <p className="text-xl mb-10 text-gray-600">Subscribe to get early access to limited drops and brotherhood events.</p>
+            <p className="text-xl mb-10 text-gray-600">Subscribe to get early access to limited drops and rider events.</p>
             <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
               <input 
                 type="email" 

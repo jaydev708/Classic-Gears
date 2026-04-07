@@ -1,10 +1,22 @@
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { Bike, ShoppingBag, Menu, X, Instagram, Facebook, Twitter } from "lucide-react";
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
+
+  // Prevent scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   return (
     <nav className="fixed w-full z-50 bg-brand-dark/80 backdrop-blur-lg border-b border-white/5">
@@ -12,20 +24,17 @@ export const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center gap-4">
             <img 
-              src={logoError ? "https://placehold.co/200x80/000000/ff1a1a?text=LOGO" : "/logo.png"} 
-              alt="Classic Gears Logo" 
-              className="h-12 w-auto" 
+              src={logoError ? "https://placehold.co/400x120/000000/ff1a1a?text=INLINE4" : "/logo.png"} 
+              alt="INLINE4 Logo" 
+              className="h-14 md:h-16 w-auto" 
               onError={() => setLogoError(true)}
               referrerPolicy="no-referrer" 
             />
-            <span className="font-display text-xs md:text-sm tracking-[0.2em] uppercase hidden sm:block text-brand-silver/50 max-w-[150px] leading-tight">
-              Built by riders, for riders.
-            </span>
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
             <NavLink href="#collections">Collections</NavLink>
-            <NavLink href="#brotherhood">Brotherhood</NavLink>
+            <NavLink href="#ride">The Ride</NavLink>
             <NavLink href="#about">Our Story</NavLink>
             <button className="bg-brand-red hover:bg-red-700 text-white px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2">
               <ShoppingBag className="w-4 h-4" />
@@ -34,29 +43,84 @@ export const Navbar = () => {
           </div>
 
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-brand-cream">
-              {isOpen ? <X /> : <Menu />}
+            <button 
+              onClick={() => setIsOpen(!isOpen)} 
+              className="text-brand-cream p-2 focus:outline-none"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isOpen ? "close" : "open"}
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+                </motion.div>
+              </AnimatePresence>
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="md:hidden bg-brand-dark border-b border-white/10 px-4 py-6 space-y-4"
-        >
-          <MobileNavLink href="#collections" onClick={() => setIsOpen(false)}>Collections</MobileNavLink>
-          <MobileNavLink href="#brotherhood" onClick={() => setIsOpen(false)}>Brotherhood</MobileNavLink>
-          <MobileNavLink href="#about" onClick={() => setIsOpen(false)}>Our Story</MobileNavLink>
-          <button className="w-full bg-brand-red text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
-            <ShoppingBag className="w-5 h-5" />
-            Shop Now
-          </button>
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            id="mobile-menu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "100vh" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="md:hidden fixed inset-x-0 top-20 bg-brand-dark z-40 overflow-hidden flex flex-col px-6 py-12"
+          >
+            <div className="space-y-8 flex flex-col items-center">
+              {[
+                { name: "Collections", href: "#collections" },
+                { name: "The Ride", href: "#ride" },
+                { name: "Our Story", href: "#about" }
+              ].map((link, i) => (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                >
+                  <MobileNavLink href={link.href} onClick={() => setIsOpen(false)}>
+                    {link.name}
+                  </MobileNavLink>
+                </motion.div>
+              ))}
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 }}
+                className="w-full pt-8"
+              >
+                <button className="w-full bg-brand-red text-white px-6 py-4 rounded-full font-bold text-xl flex items-center justify-center gap-3 shadow-lg shadow-brand-red/20">
+                  <ShoppingBag className="w-6 h-6" />
+                  Shop Now
+                </button>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="pt-12 flex gap-8 text-brand-silver/40"
+              >
+                <Instagram className="w-6 h-6 hover:text-brand-red transition-colors" />
+                <Facebook className="w-6 h-6 hover:text-brand-red transition-colors" />
+                <Twitter className="w-6 h-6 hover:text-brand-red transition-colors" />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
@@ -74,17 +138,20 @@ const MobileNavLink = ({ href, children, onClick }: { href: string; children: Re
 );
 
 export const Hero = () => {
+  const [heroError, setHeroError] = useState(false);
+
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background with parallax effect or video feel */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&q=80&w=2070" 
+          src={heroError ? "https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=2070" : "https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=2070"} 
           alt="Biker on open road" 
-          className="w-full h-full object-cover opacity-40"
+          className="w-full h-full object-cover opacity-60"
+          onError={() => setHeroError(true)}
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-brand-dark/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/80 via-transparent to-brand-dark" />
       </div>
 
       <div className="relative z-10 text-center px-4 max-w-4xl">
@@ -93,22 +160,40 @@ export const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <span className="retro-text text-brand-red text-xl md:text-2xl mb-4 block">Est. 2024 • Built for the Bold</span>
+          <span className="redline-text text-brand-red text-xl md:text-2xl mb-4 block tracking-[0.3em] uppercase">Built Above Redline</span>
           <h1 className="text-6xl md:text-9xl font-display leading-none mb-6">
-            RIDE WITH <br />
-            <span className="text-stroke">LEGENDS</span>
+            RIDE ABOVE <br />
+            <span className="text-stroke">REDLINE</span>
           </h1>
           <p className="text-lg md:text-xl text-brand-silver/80 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
-            Premium apparel that captures the raw adrenaline of the open road and the timeless soul of classic biking culture.
+            Built for riders who live at the limit. Not for everyone.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <button className="adrenaline-gradient px-10 py-4 rounded-full text-lg font-bold uppercase tracking-tighter hover:scale-105 transition-transform">
-              Explore Collection
+              Shop the Drop
             </button>
             <button className="border border-white/20 hover:bg-white/10 px-10 py-4 rounded-full text-lg font-bold uppercase tracking-tighter transition-all">
-              Join the Brotherhood
+              Join the Ride
             </button>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="relative inline-block"
+          >
+            <div className="absolute -inset-4 bg-brand-red/20 blur-2xl rounded-full" />
+            <img 
+              src="/newdrop.png" 
+              alt="Featured New Drop" 
+              className="relative w-48 md:w-64 h-auto rounded-xl border border-white/10 shadow-2xl mx-auto"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute -bottom-4 -right-4 bg-brand-red text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
+              New Drop
+            </div>
+          </motion.div>
         </motion.div>
       </div>
 
@@ -127,67 +212,98 @@ export const Hero = () => {
 export const FeaturedCollections = () => {
   const collections = [
     {
-      title: "Vintage Tees",
+      title: "Tees",
       image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=1000",
-      description: "Soft-washed cotton with hand-drawn retro graphics."
+      description: "Engineered for the street. High-density prints that don't back down."
     },
     {
-      title: "Road Hoodies",
+      title: "Hoodies",
       image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=1000",
-      description: "Heavyweight fleece built for long rides and cold nights."
+      description: "Heavyweight armor for the night shift. Made for the redline."
     },
     {
-      title: "Rider Sweatshirts",
-      image: "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&q=80&w=1000",
-      description: "Minimalist designs for the modern enthusiast."
+      title: "Sweatshirts",
+      image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&q=80&w=1000",
+      description: "Minimalist identity. Maximum street presence."
+    },
+    {
+      title: "Accessories",
+      image: "https://images.unsplash.com/photo-1558981403-c5f91bbde3c0?auto=format&fit=crop&q=80&w=1000",
+      description: "Essential gear for the long ride. Built to last."
+    },
+    {
+      title: "Limited Edition",
+      image: "https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1000",
+      description: "Exclusive drops. Once they're gone, they're gone."
     }
   ];
 
+  // Duplicate for infinite scroll
+  const duplicatedCollections = [...collections, ...collections];
+
   return (
-    <section id="collections" className="py-24 px-4 bg-brand-dark">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+    <section id="collections" className="py-24 bg-brand-dark overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 mb-16">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-6">
           <div>
-            <h2 className="text-5xl md:text-7xl mb-4">THE GEAR</h2>
-            <p className="text-brand-silver/60 max-w-md">Engineered for comfort, designed for the culture. Every piece tells a story of the road.</p>
+            <h2 className="text-5xl md:text-7xl mb-4 uppercase tracking-tighter">THE DROP</h2>
+            <p className="text-brand-silver/60 max-w-md">Built for riders. Every piece is a statement of intent on the asphalt.</p>
           </div>
           <button className="text-brand-red font-bold uppercase tracking-widest border-b-2 border-brand-red pb-1 hover:text-white hover:border-white transition-all">
             View All Products
           </button>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {collections.map((item, idx) => (
+      {/* Automatic Infinite Carousel */}
+      <div className="relative flex overflow-hidden group/carousel">
+        <motion.div 
+          className="flex gap-8 px-4"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ 
+            duration: 30, 
+            ease: "linear", 
+            repeat: Infinity 
+          }}
+          whileHover={{ animationPlayState: "paused" }}
+          style={{ width: "fit-content" }}
+        >
+          {duplicatedCollections.map((item, idx) => (
             <motion.div 
               key={idx}
-              whileHover={{ y: -10 }}
-              className="group relative overflow-hidden rounded-2xl aspect-[3/4]"
+              whileHover={{ 
+                y: -12, 
+                scale: 1.02,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)"
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="group relative flex-shrink-0 w-[300px] md:w-[400px] overflow-hidden rounded-2xl aspect-[3/4] bg-brand-dark"
             >
               <img 
                 src={item.image} 
                 alt={item.title} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 brightness-75 group-hover:brightness-90"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/20 to-transparent opacity-80" />
               <div className="absolute bottom-0 left-0 p-8 w-full">
-                <h3 className="text-3xl mb-2">{item.title}</h3>
-                <p className="text-brand-silver/70 mb-6 text-sm">{item.description}</p>
+                <h3 className="text-3xl mb-2 uppercase font-bold tracking-tighter">{item.title}</h3>
+                <p className="text-brand-silver/70 mb-6 text-sm line-clamp-2">{item.description}</p>
                 <button className="w-full py-3 bg-white text-brand-dark font-bold uppercase tracking-tighter rounded-lg transform translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                   Shop Category
                 </button>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 };
 
-export const Brotherhood = () => {
+export const TheRide = () => {
   return (
-    <section id="brotherhood" className="py-24 relative overflow-hidden">
+    <section id="ride" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-brand-red/5 -skew-y-3 origin-left" />
       
       <div className="max-w-7xl mx-auto px-4 relative z-10">
@@ -195,38 +311,38 @@ export const Brotherhood = () => {
           <div className="order-2 lg:order-1">
             <div className="grid grid-cols-2 gap-4">
               <img 
-                src="https://images.unsplash.com/photo-1558981403-c5f91bbde3c0?auto=format&fit=crop&q=80&w=600" 
-                alt="Biking brotherhood" 
-                className="rounded-2xl w-full h-64 object-cover"
+                src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=600" 
+                alt="Sportbike riders" 
+                className="rounded-2xl w-full h-64 object-cover brightness-75 contrast-125"
                 referrerPolicy="no-referrer"
               />
               <img 
-                src="https://images.unsplash.com/photo-1459478309853-2c33a60058e7?auto=format&fit=crop&q=80&w=600" 
-                alt="Biking culture" 
-                className="rounded-2xl w-full h-64 object-cover mt-8"
+                src="https://images.unsplash.com/photo-1558981359-219d6364c9c8?auto=format&fit=crop&q=80&w=600" 
+                alt="Night ride culture" 
+                className="rounded-2xl w-full h-64 object-cover mt-8 brightness-50 contrast-125"
                 referrerPolicy="no-referrer"
               />
             </div>
           </div>
           
           <div className="order-1 lg:order-2">
-            <span className="retro-text text-brand-red text-xl mb-4 block">More than just clothes</span>
-            <h2 className="text-5xl md:text-7xl mb-8">THE BROTHERHOOD</h2>
+            <span className="redline-text text-brand-red text-xl mb-4 block uppercase tracking-widest">More than clothing</span>
+            <h2 className="text-5xl md:text-7xl mb-8">THE RIDE</h2>
             <p className="text-brand-silver/80 text-lg mb-8 leading-relaxed">
-              Classic Gears isn't just a brand; it's a community of riders who live for the rumble of the engine and the freedom of the highway. We celebrate the bond that only those on two wheels can understand.
+              INLINE4 is for those who live for the high RPM scream and the blur of the highway at night. We are a community of riders who push the limit. This is for those who ride.
             </p>
             <ul className="space-y-4 mb-10">
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-brand-red rounded-full" />
-                <span className="font-semibold">Exclusive Rider Meetups</span>
+                <span className="font-semibold uppercase tracking-tighter">Night Run Sessions</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-brand-red rounded-full" />
-                <span className="font-semibold">Custom Patch Programs</span>
+                <span className="font-semibold uppercase tracking-tighter">Performance Culture</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-brand-red rounded-full" />
-                <span className="font-semibold">Biker Story Features</span>
+                <span className="font-semibold uppercase tracking-tighter">Rider Identity</span>
               </li>
             </ul>
             <button className="bg-white text-brand-dark px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-brand-red hover:text-white transition-all">
@@ -245,29 +361,29 @@ export const OurStory = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div>
-            <h2 className="text-5xl md:text-7xl mb-8">OUR STORY</h2>
+            <h2 className="text-5xl md:text-7xl mb-8 uppercase tracking-tighter">OUR STORY</h2>
             <div className="space-y-6 text-brand-silver/80 text-lg leading-relaxed">
               <p>
-                Classic Gears was born from a simple realization: the spirit of the Indian biker deserved a wardrobe that matched the soul of their machine.
+                INLINE4 wasn't built in a boardroom. It was born on the highway at 2 AM, inspired by the high-pitched scream of four cylinders hitting the redline.
               </p>
               <p>
-                Founded by <span className="text-brand-red font-bold">Aditya Yadav</span> and co-founded by <span className="text-brand-red font-bold">Jay Dev</span>, our brand is a tribute to the open roads, the grease-stained hands, and the unshakeable bond of the biking brotherhood.
+                Founded by <span className="text-brand-red font-bold">Aditya Yadav</span> and co-founded by <span className="text-brand-red font-bold">Jay Dev</span>, our brand is a tribute to the riders who live for the adrenaline, the night runs, and the pure passion of sportbike culture.
               </p>
               <p>
-                We don't just make clothes; we craft the uniform for your next adventure. Every stitch is a testament to the adrenaline rush of the ride and the timeless elegance of retro biking culture.
+                We don't just make clothes; we craft the identity for those who live at the limit. Every stitch is a testament to the raw energy of the ride. Built for riders. Made for the redline.
               </p>
             </div>
           </div>
           <div className="relative">
             <div className="absolute -inset-4 bg-brand-red/20 blur-3xl rounded-full" />
             <img 
-              src="https://images.unsplash.com/photo-1558981420-87aa9dad1c89?auto=format&fit=crop&q=80&w=800" 
-              alt="Classic Biker" 
-              className="relative rounded-2xl border border-white/10 shadow-2xl"
+              src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=800" 
+              alt="Sportbike Rider" 
+              className="relative rounded-2xl border border-white/10 shadow-2xl brightness-75 grayscale-[20%]"
               referrerPolicy="no-referrer"
             />
-            <div className="absolute bottom-8 -left-8 glass-card p-6 rounded-xl hidden md:block">
-              <p className="retro-text text-brand-red text-xl">"Built by riders, for riders."</p>
+            <div className="absolute bottom-8 -left-8 glass-card p-6 rounded-xl hidden md:block border border-white/10">
+              <p className="redline-text text-brand-red text-xl uppercase tracking-widest">"Built Above Redline"</p>
             </div>
           </div>
         </div>
@@ -286,18 +402,15 @@ export const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-4 mb-6">
               <img 
-                src={logoError ? "https://placehold.co/200x80/000000/ff1a1a?text=LOGO" : "/logo.png"} 
-                alt="Classic Gears Logo" 
-                className="h-10 w-auto" 
+                src={logoError ? "https://placehold.co/400x120/000000/ff1a1a?text=INLINE4" : "/logo.png"} 
+                alt="INLINE4 Logo" 
+                className="h-12 md:h-14 w-auto" 
                 onError={() => setLogoError(true)}
                 referrerPolicy="no-referrer" 
               />
-              <span className="font-display text-xs tracking-[0.2em] uppercase text-brand-silver/40 max-w-[120px] leading-tight">
-                Built by riders, for riders.
-              </span>
             </div>
             <p className="text-brand-silver/50 max-w-sm mb-8">
-              Born in India, raised on the road. We create premium apparel for the modern biker who respects the classics.
+              Inline4 Clothing Co. Born from the scream of four cylinders. Built for riders who live at the limit.
             </p>
             <div className="flex gap-4">
               <SocialIcon icon={<Instagram />} />
@@ -309,7 +422,7 @@ export const Footer = () => {
           <div>
             <h4 className="font-display text-xl mb-6 uppercase tracking-widest">Shop</h4>
             <ul className="space-y-3 text-brand-silver/60">
-              <li><FooterLink>T-Shirts</FooterLink></li>
+              <li><FooterLink>Tees</FooterLink></li>
               <li><FooterLink>Hoodies</FooterLink></li>
               <li><FooterLink>Sweatshirts</FooterLink></li>
               <li><FooterLink>Accessories</FooterLink></li>
@@ -319,16 +432,16 @@ export const Footer = () => {
           <div>
             <h4 className="font-display text-xl mb-6 uppercase tracking-widest">Support</h4>
             <ul className="space-y-3 text-brand-silver/60">
-              <li><FooterLink>Shipping Policy</FooterLink></li>
-              <li><FooterLink>Returns & Exchanges</FooterLink></li>
+              <li><FooterLink>Shipping</FooterLink></li>
+              <li><FooterLink>Returns</FooterLink></li>
               <li><FooterLink>Size Guide</FooterLink></li>
-              <li><FooterLink>Contact Us</FooterLink></li>
+              <li><FooterLink>Contact</FooterLink></li>
             </ul>
           </div>
         </div>
         
         <div className="border-t border-white/10 pt-8 flex flex-col md:row justify-between items-center gap-4 text-brand-silver/30 text-sm">
-          <p>© 2026 Classic Gears India. All Rights Reserved.</p>
+          <p>© 2026 Inline4 Clothing Co. All Rights Reserved.</p>
           <div className="flex gap-8">
             <FooterLink>Privacy Policy</FooterLink>
             <FooterLink>Terms of Service</FooterLink>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.classicgears.shop/sitemap.xml
+Sitemap: https://www.inline4.shop/sitemap.xml
