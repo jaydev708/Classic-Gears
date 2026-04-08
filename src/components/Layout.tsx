@@ -165,9 +165,19 @@ export const Hero = () => {
             RIDE ABOVE <br />
             <span className="text-stroke">REDLINE</span>
           </h1>
-          <p className="text-lg md:text-xl text-brand-silver/80 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
-            Built for riders who live at the limit. Not for everyone.
-          </p>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
+            className="text-xl md:text-2xl max-w-4xl mx-auto mb-10 leading-relaxed font-black tracking-wide"
+            style={{ 
+              color: '#800000',
+              WebkitTextStroke: '1.5px white',
+              fontSize: '250%'
+            }}
+          >
+            𝕭𝖚𝖎𝖑𝖙 𝖋𝖔𝖗 𝖙𝖍𝖊 𝕽𝖎𝖉𝖊𝖗𝖘 𝖜𝖍𝖔 𝖑𝖎𝖛𝖊 𝕷𝖎𝖒𝖎𝖙𝖑𝖊𝖘𝖘
+          </motion.p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <button className="adrenaline-gradient px-10 py-4 rounded-full text-lg font-bold uppercase tracking-tighter hover:scale-105 transition-transform">
               Shop the Drop
@@ -179,15 +189,29 @@ export const Hero = () => {
 
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1,
+            }}
             transition={{ delay: 1, duration: 0.8 }}
             className="relative inline-block"
           >
-            <div className="absolute -inset-4 bg-brand-red/20 blur-2xl rounded-full" />
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.05, 1],
+                opacity: [0.2, 0.4, 0.2]
+              }}
+              transition={{ 
+                duration: 3, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="absolute -inset-4 bg-brand-red/30 blur-2xl rounded-full" 
+            />
             <img 
               src="/newdrop.png" 
               alt="Featured New Drop" 
-              className="relative w-48 md:w-64 h-auto rounded-xl border border-white/10 shadow-2xl mx-auto"
+              className="relative w-48 md:w-64 h-auto rounded-xl border-4 border-brand-red ring-2 ring-black shadow-2xl mx-auto"
               referrerPolicy="no-referrer"
             />
             <div className="absolute -bottom-4 -right-4 bg-brand-red text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
