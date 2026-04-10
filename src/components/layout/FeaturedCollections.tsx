@@ -1,96 +1,150 @@
-import { motion, useAnimationControls } from "motion/react";
-import { useRef, useEffect, useState } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "motion/react";
+import { useRef, useState, useEffect } from "react";
 
 export const FeaturedCollections = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [constraints, setConstraints] = useState({ left: 0, right: 0 });
-
+  const [activeIndex, setActiveIndex] = useState(0);
+  
   const collections = [
-    {
-      title: "Tees",
-      image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=1000",
-      description: "Engineered for the street. High-density prints that don't back down."
-    },
-    {
-      title: "Hoodies",
-      image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=1000",
-      description: "Heavyweight armor for the night shift. Made for the redline."
-    },
-    {
-      title: "Sweatshirts",
-      image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&q=80&w=1000",
-      description: "Minimalist identity. Maximum street presence."
-    },
-    {
-      title: "Accessories",
-      image: "https://images.unsplash.com/photo-1558981403-c5f91bbde3c0?auto=format&fit=crop&q=80&w=1000",
-      description: "Essential gear for the long ride. Built to last."
-    },
-    {
-      title: "Limited Edition",
-      image: "https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1000",
-      description: "Exclusive drops. Once they're gone, they're gone."
-    }
+    { title: "Tees", rpm: 3000, image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=600" },
+    { title: "Hoodies", rpm: 5000, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600" },
+    { title: "Jackets", rpm: 8000, image: "https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=600" },
+    { title: "Gear Bags", rpm: 10000, image: "https://images.unsplash.com/photo-1558981403-c5f91bbde3c0?auto=format&fit=crop&q=80&w=600" },
+    { title: "Limited", rpm: 12000, image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&q=80&w=600" },
   ];
 
+  const { scrollXProgress } = useScroll({
+    container: containerRef,
+  });
+
+  const smoothProgress = useSpring(scrollXProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  // Calculate needle rotation: -135deg (0 RPM) to 135deg (12k RPM)
+  const needleRotation = useTransform(smoothProgress, [0, 1], [-110, 110]);
+  
+  // Track active index for UI details
   useEffect(() => {
-    if (containerRef.current) {
-      const { scrollWidth, offsetWidth } = containerRef.current;
-      setConstraints({ left: -(scrollWidth - offsetWidth), right: 0 });
-    }
-  }, []);
+    return scrollXProgress.on("change", (latest) => {
+      const index = Math.min(Math.round(latest * (collections.length - 1)), collections.length - 1);
+      setActiveIndex(index);
+    });
+  }, [scrollXProgress, collections.length]);
 
   return (
-    <section id="collections" className="py-24 bg-brand-dark overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 mb-16">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-6">
-          <div>
-            <h2 className="text-5xl md:text-7xl mb-4 uppercase tracking-tighter">THE DROP</h2>
-            <p className="text-brand-silver/60 max-w-md">Built for riders. Every piece is a statement of intent on the asphalt.</p>
-          </div>
-          <button className="text-brand-red font-bold uppercase tracking-widest border-b-2 border-brand-red pb-1 hover:text-white hover:border-white transition-all">
-            View All Products
-          </button>
+    <section id="collections" className="py-32 bg-brand-dark relative overflow-hidden carbon-fiber">
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="text-center mb-24">
+          <h2 className="text-5xl md:text-8xl mb-4 uppercase tracking-tighter italic">THE REDLINE DROP</h2>
+          <p className="text-brand-red font-display text-2xl tracking-[0.2em]">MISSION: HIGH RPM SEARCH</p>
         </div>
-      </div>
 
-      {/* Interactive Carousel */}
-      <div className="relative cursor-grab active:cursor-grabbing">
-        <motion.div 
-          ref={containerRef}
-          drag="x"
-          dragConstraints={constraints}
-          dragElastic={0.1}
-          className="flex gap-8 px-4 md:px-[calc((100vw-1280px)/2)]"
-          style={{ width: "max-content" }}
-        >
-          {collections.map((item, idx) => (
-            <motion.div 
-              key={idx}
-              whileHover={{ 
-                y: -12, 
-                scale: 1.02,
-                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)"
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="group relative flex-shrink-0 w-[300px] md:w-[400px] overflow-hidden rounded-2xl aspect-[3/4] bg-brand-dark"
-            >
-              <img 
-                src={item.image} 
-                alt={item.title} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 brightness-75 group-hover:brightness-90 pointer-events-none"
-                referrerPolicy="no-referrer"
+        <div className="relative h-[600px] flex items-end justify-center">
+          {/* Speedometer Gauge Background */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] md:w-[800px] aspect-square flex items-center justify-center">
+            <svg viewBox="0 0 400 400" className="w-full h-full opacity-30 drop-shadow-[0_0_15px_rgba(255,26,26,0.2)]">
+              {/* Outer Ring */}
+              <circle cx="200" cy="200" r="190" fill="none" stroke="white" strokeWidth="1" strokeDasharray="5 10" />
+              {/* Main Progress Arc */}
+              <motion.path
+                d="M 66 334 A 190 190 0 1 1 334 334"
+                fill="none"
+                stroke="#ff1a1a"
+                strokeWidth="4"
+                strokeLinecap="round"
+                style={{ pathLength: smoothProgress }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/20 to-transparent opacity-80" />
-              <div className="absolute bottom-0 left-0 p-8 w-full">
-                <h3 className="text-3xl mb-2 uppercase font-bold tracking-tighter">{item.title}</h3>
-                <p className="text-brand-silver/70 mb-6 text-sm line-clamp-2">{item.description}</p>
-                <button className="w-full py-3 bg-white text-brand-dark font-bold uppercase tracking-tighter rounded-lg transform translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                  Shop Category
-                </button>
-              </div>
+              {/* RPM Markers */}
+              {[0, 2, 4, 6, 8, 10, 12].map((rpm) => {
+                const angle = (rpm / 12) * 270 - 225;
+                const x1 = 200 + 175 * Math.cos((angle * Math.PI) / 180);
+                const y1 = 200 + 175 * Math.sin((angle * Math.PI) / 180);
+                const x2 = 200 + 190 * Math.cos((angle * Math.PI) / 180);
+                const y2 = 200 + 190 * Math.sin((angle * Math.PI) / 180);
+                return (
+                  <g key={rpm}>
+                    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={rpm >= 10 ? "#ff1a1a" : "white"} strokeWidth={rpm % 4 === 0 ? "4" : "2"} />
+                    <text
+                      x={200 + 150 * Math.cos((angle * Math.PI) / 180)}
+                      y={200 + 150 * Math.sin((angle * Math.PI) / 180)}
+                      fill={rpm >= 10 ? "#ff1a1a" : "white"}
+                      fontSize="16"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                      alignmentBaseline="middle"
+                      className="font-display italic"
+                    >
+                      {rpm}K
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
+
+            {/* Needle */}
+            <motion.div 
+              style={{ rotate: needleRotation, originY: "100%" }}
+              className="absolute bottom-1/2 left-1/2 -translate-x-1/2 w-1 md:w-2 h-48 md:h-72 bg-gradient-to-t from-transparent via-brand-red to-brand-red rounded-full z-20 shadow-[0_0_20px_rgba(255,26,26,0.8)]"
+            >
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-brand-red border-2 border-white shadow-lg" />
             </motion.div>
-          ))}
+            
+            {/* Center Cap */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-black border-4 border-brand-red z-30 flex items-center justify-center">
+              <span className="text-white font-display text-xl skew-x-[-10deg]">I4</span>
+            </div>
+          </div>
+
+          {/* Carousel Cards (Horizontal Scroll with Radial mapping feel) */}
+          <div 
+            ref={containerRef}
+            className="absolute bottom-0 left-0 w-full h-full overflow-x-scroll no-scrollbar flex items-end px-[35vw] md:px-[42vw] pb-10 snap-x snap-mandatory z-40"
+          >
+            <div className="flex gap-20 py-20">
+              {collections.map((item, idx) => (
+                <motion.div
+                  key={item.title}
+                  className="snap-center shrink-0 w-[280px] md:w-[400px]"
+                  style={{
+                    scale: useTransform(smoothProgress, [idx / (collections.length - 1) - 0.1, idx / (collections.length - 1), idx / (collections.length - 1) + 0.1], [0.85, 1.05, 0.85]),
+                    opacity: useTransform(smoothProgress, [idx / (collections.length - 1) - 0.2, idx / (collections.length - 1), idx / (collections.length - 1) + 0.2], [0.2, 1, 0.2]),
+                  }}
+                >
+                  <div className="group relative overflow-hidden rounded-3xl border-4 border-brand-red/20 hover:border-brand-red transition-all duration-500 redline-glow">
+                    <img 
+                      src={item.image} 
+                      alt={item.title} 
+                      className="w-full aspect-[4/5] object-cover brightness-50 group-hover:brightness-90 transition-all duration-700 hover:scale-110"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent" />
+                    <div className="absolute bottom-8 left-8 right-8">
+                      <div className="text-brand-red font-display text-2xl skew-x-[-10deg] mb-1">{item.rpm} RPM</div>
+                      <h3 className="text-4xl font-display mb-6 tracking-wider">{item.title}</h3>
+                      <button className="w-full py-4 bg-white text-black font-bold uppercase tracking-widest rounded-xl transform translate-y-20 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 hover:bg-brand-red hover:text-white">
+                        Access Drop
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Selected Product Specs */}
+        <motion.div 
+          key={activeIndex}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mt-12 pb-20"
+        >
+          <div className="inline-block px-4 py-1 bg-brand-red text-white text-[10px] font-black uppercase tracking-[0.3em] mb-4 overflow-hidden rounded">Active Spec</div>
+          <h4 className="text-4xl font-display mb-2">{collections[activeIndex].title} GEAR</h4>
+          <p className="text-brand-silver/50 max-w-md mx-auto italic uppercase text-xs tracking-[0.2em]">Engineered for high-vibe night runs and apex performance.</p>
         </motion.div>
       </div>
     </section>
