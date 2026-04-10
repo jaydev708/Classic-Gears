@@ -33,11 +33,11 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
-            className="text-xl md:text-2xl max-w-4xl mx-auto mb-10 leading-relaxed font-black tracking-wide gothic-text"
+            className="text-3xl md:text-5xl max-w-4xl mx-auto mb-10 leading-relaxed gothic-text px-4"
             style={{ 
-              color: '#800000',
-              WebkitTextStroke: '1.5px white',
-              fontSize: '250%'
+              color: '#ff1a1a',
+              WebkitTextStroke: '1px white',
+              textShadow: '0 0 20px rgba(255, 26, 26, 0.5)'
             }}
           >
             Built for the Riders who live Limitless
