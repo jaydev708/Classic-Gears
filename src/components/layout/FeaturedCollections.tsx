@@ -1,6 +1,10 @@
-import { motion } from "motion/react";
+import { motion, useAnimationControls } from "motion/react";
+import { useRef, useEffect, useState } from "react";
 
 export const FeaturedCollections = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [constraints, setConstraints] = useState({ left: 0, right: 0 });
+
   const collections = [
     {
       title: "Tees",
@@ -29,8 +33,12 @@ export const FeaturedCollections = () => {
     }
   ];
 
-  // Duplicate for infinite scroll
-  const duplicatedCollections = [...collections, ...collections];
+  useEffect(() => {
+    if (containerRef.current) {
+      const { scrollWidth, offsetWidth } = containerRef.current;
+      setConstraints({ left: -(scrollWidth - offsetWidth), right: 0 });
+    }
+  }, []);
 
   return (
     <section id="collections" className="py-24 bg-brand-dark overflow-hidden">
@@ -46,20 +54,17 @@ export const FeaturedCollections = () => {
         </div>
       </div>
 
-      {/* Automatic Infinite Carousel */}
-      <div className="relative flex overflow-hidden group/carousel">
+      {/* Interactive Carousel */}
+      <div className="relative cursor-grab active:cursor-grabbing">
         <motion.div 
-          className="flex gap-8 px-4"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ 
-            duration: 30, 
-            ease: "linear", 
-            repeat: Infinity 
-          }}
-          whileHover={{ animationPlayState: "paused" }}
-          style={{ width: "fit-content" }}
+          ref={containerRef}
+          drag="x"
+          dragConstraints={constraints}
+          dragElastic={0.1}
+          className="flex gap-8 px-4 md:px-[calc((100vw-1280px)/2)]"
+          style={{ width: "max-content" }}
         >
-          {duplicatedCollections.map((item, idx) => (
+          {collections.map((item, idx) => (
             <motion.div 
               key={idx}
               whileHover={{ 
@@ -73,7 +78,7 @@ export const FeaturedCollections = () => {
               <img 
                 src={item.image} 
                 alt={item.title} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 brightness-75 group-hover:brightness-90"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 brightness-75 group-hover:brightness-90 pointer-events-none"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/20 to-transparent opacity-80" />

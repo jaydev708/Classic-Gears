@@ -50,38 +50,6 @@ export const Hero = () => {
               Join the Ride
             </button>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1,
-            }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="relative inline-block"
-          >
-            <motion.div 
-              animate={{ 
-                scale: [1, 1.05, 1],
-                opacity: [0.2, 0.4, 0.2]
-              }}
-              transition={{ 
-                duration: 3, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
-              }}
-              className="absolute -inset-4 bg-brand-red/30 blur-2xl rounded-full" 
-            />
-            <img 
-              src="/newdrop.png" 
-              alt="Featured New Drop" 
-              className="relative w-48 md:w-64 h-auto rounded-xl border-4 border-brand-red ring-2 ring-black shadow-2xl mx-auto"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute -bottom-4 -right-4 bg-brand-red text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
-              New Drop
-            </div>
-          </motion.div>
         </motion.div>
       </div>
 
