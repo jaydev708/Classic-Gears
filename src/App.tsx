@@ -1,4 +1,9 @@
-import { Navbar, Hero, FeaturedCollections, TheRide, OurStory, Footer } from "./components/Layout";
+import { Navbar } from "./components/layout/Navbar";
+import { Hero } from "./components/layout/Hero";
+import { FeaturedCollections } from "./components/layout/FeaturedCollections";
+import { TheRide } from "./components/layout/TheRide";
+import { OurStory } from "./components/layout/OurStory";
+import { Footer } from "./components/layout/Footer";
 import { motion, useScroll, useSpring } from "motion/react";
 
 export default function App() {

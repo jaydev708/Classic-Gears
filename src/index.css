@@ -41,6 +41,11 @@
   @apply font-black;
 }
 
+.gothic-text {
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 0.1em;
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
