@@ -69,6 +69,13 @@ export const FeaturedCollections = () => {
     });
   }, [scrollXProgress, collections.length]);
 
+  // Calculate dynamic colors for the meter line
+  const arcColor = useTransform(
+    smoothProgress,
+    [0, 0.4, 0.8, 1],
+    ["#22c55e", "#eab308", "#ff1a1a", "#ff1a1a"]
+  );
+
   return (
     <section id="collections" className="py-32 bg-brand-dark relative overflow-hidden carbon-fiber">
       <div className="max-w-7xl mx-auto px-4 relative z-10">
@@ -87,7 +94,7 @@ export const FeaturedCollections = () => {
               <motion.path
                 d="M 66 334 A 190 190 0 1 1 334 334"
                 fill="none"
-                stroke="#ff1a1a"
+                stroke={arcColor}
                 strokeWidth="4"
                 strokeLinecap="round"
                 style={{ pathLength: smoothProgress }}
