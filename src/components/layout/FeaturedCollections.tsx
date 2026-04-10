@@ -23,6 +23,41 @@ export const FeaturedCollections = () => {
     restDelta: 0.001
   });
 
+  // Auto-play logic
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let trayInterval: NodeJS.Timeout;
+    const startAutoPlay = () => {
+      trayInterval = setInterval(() => {
+        if (container.scrollLeft >= container.scrollWidth - container.offsetWidth) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollBy({ left: 1, behavior: 'auto' });
+        }
+      }, 30); // Adjust for speed
+    };
+
+    startAutoPlay();
+
+    const pauseAutoPlay = () => clearInterval(trayInterval);
+    const resumeAutoPlay = () => startAutoPlay();
+
+    container.addEventListener('mouseenter', pauseAutoPlay);
+    container.addEventListener('mouseleave', resumeAutoPlay);
+    container.addEventListener('touchstart', pauseAutoPlay);
+    container.addEventListener('touchend', resumeAutoPlay);
+
+    return () => {
+      clearInterval(trayInterval);
+      container.removeEventListener('mouseenter', pauseAutoPlay);
+      container.removeEventListener('mouseleave', resumeAutoPlay);
+      container.removeEventListener('touchstart', pauseAutoPlay);
+      container.removeEventListener('touchend', resumeAutoPlay);
+    };
+  }, []);
+
   // Calculate needle rotation: -135deg (0 RPM) to 135deg (12k RPM)
   const needleRotation = useTransform(smoothProgress, [0, 1], [-110, 110]);
   
@@ -64,13 +99,20 @@ export const FeaturedCollections = () => {
                 const y1 = 200 + 175 * Math.sin((angle * Math.PI) / 180);
                 const x2 = 200 + 190 * Math.cos((angle * Math.PI) / 180);
                 const y2 = 200 + 190 * Math.sin((angle * Math.PI) / 180);
+                
+                // RPM Dynamic Coloring
+                let color = "white";
+                if (rpm <= 4) color = "#22c55e"; // Green
+                else if (rpm <= 8) color = "#eab308"; // Yellow
+                else color = "#ff1a1a"; // Red
+
                 return (
                   <g key={rpm}>
-                    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={rpm >= 10 ? "#ff1a1a" : "white"} strokeWidth={rpm % 4 === 0 ? "4" : "2"} />
+                    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={rpm % 4 === 0 ? "4" : "2"} />
                     <text
                       x={200 + 150 * Math.cos((angle * Math.PI) / 180)}
                       y={200 + 150 * Math.sin((angle * Math.PI) / 180)}
-                      fill={rpm >= 10 ? "#ff1a1a" : "white"}
+                      fill={color}
                       fontSize="16"
                       fontWeight="bold"
                       textAnchor="middle"
